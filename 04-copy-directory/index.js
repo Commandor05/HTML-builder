@@ -36,8 +36,8 @@ function copyDir() {
             const fileSourcePath = path.join(sourcePath, file.name);  
             const fileDestinationPath = path.join(destinationPath, file.name);  
     
-            copyFile(fileSourcePath, fileDestinationPath, (err) => {
-              if (err) return console.log(error.message);            
+            copyFile(fileSourcePath, fileDestinationPath, (error) => {
+              if (error) return console.log(error.message);            
               console.log(`${file.name} - copied`);
             });
           });
