@@ -1,32 +1,23 @@
 const path = require('path');
-const { mkdir, readdir, copyFile, unlink } = require('fs');
+const { mkdir, readdir, copyFile } = require('fs');
+const { rm } = require('fs/promises');
 
 const sourceDir = 'files';
 const destinationDir = 'files-copy';
 const sourcePath = path.join(__dirname, sourceDir);
 const destinationPath = path.join(__dirname, destinationDir);
 
-function clearDestinationDir() {
-  readdir(destinationPath,
-    { withFileTypes: true },
-    (error, files) => {
-      if (error) return console.log(error.message);
-      files.forEach(file => {
-        const filePath = path.join(destinationPath, file.name);  
-        unlink(filePath, (error) => {
-          if (error) return console.log(error.message);
-        });         
-      });
-  });
+async function clearDestinationDir() {
+  await rm(destinationPath, { recursive: true, force: true });
 }
 
-function copyDir() {
+async function copyDir() {
+  await clearDestinationDir();
   mkdir(destinationPath,
     { recursive: true },
     (error) => {
       if (error) return console.error(error.message);
       console.log('Directory created');
-      clearDestinationDir();
 
       readdir(sourcePath,
         { withFileTypes: true },
